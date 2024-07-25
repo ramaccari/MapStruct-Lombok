@@ -21,15 +21,12 @@ public interface ProductMapper {
             @Mapping(source = "price", target = "price", numberFormat = "$0.00"),
 
     } )
-    GetProduct toGetDTO(Product product);
+    GetProduct toDto(Product product);
 
     @InheritInverseConfiguration
-    @Mappings({
-            @Mapping(target = "creationDate", ignore = true)
-    })
     Product toEntity(GetProduct getProduct);
 
-    List<GetProduct> toGetProductList(List<Product> productList);
+    List<GetProduct> toDtoList(List<Product> productList);
 
     List<Product> toEntityList(List<GetProduct> getProductList);
 

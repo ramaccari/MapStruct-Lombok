@@ -1,30 +1,35 @@
 package com.cazadordigital.mapstructlombokdemo.mapper;
 
-import com.cazadordigital.mapstructlombokdemo.dto.GetCategory;
-import com.cazadordigital.mapstructlombokdemo.entity.Category;
-import com.cazadordigital.mapstructlombokdemo.repository.CategoryRepository;
-import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+import org.mapstruct.InheritInverseConfiguration;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.factory.Mappers;
+
+import com.cazadordigital.mapstructlombokdemo.dto.GetCategory;
+import com.cazadordigital.mapstructlombokdemo.entity.Category;
+
+@Mapper
 public interface CategoryMapper {
 
-    public CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
+	public CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
 
+	@Mappings({ 
+		@Mapping(source = "id", target = "categoryId"), 
+		@Mapping(source = "name", target = "categoryName")		
+		})
+	GetCategory toDto(Category category);
+
+	@InheritInverseConfiguration
     @Mappings({
-            @Mapping(source = "id", target = "categoryId"),
-            @Mapping(source = "name", target = "categoryName")
+        @Mapping(target = "status", ignore = true)
     })
-     GetCategory toGetCategory(Category category);
+	Category toEntity(GetCategory getCategory);
 
-    @InheritInverseConfiguration
-     Category toEntity(GetCategory getCategory);
+	List<GetCategory> toDtoList(List<Category> categoryList);
 
-     List<GetCategory> toGetCategoryList(List<Category> categoryList);
-
-     List<Category> toEntityList(List<GetCategory> getCategoryList);
+	List<Category> toEntityList(List<GetCategory> getCategoryList);
 
 }
